@@ -1,6 +1,7 @@
 const LASTFM_API_KEY = '4a9f5581a9cdf20a699f540ac52a95c9';
 const audioPlayer = new Audio();
 audioPlayer.volume = 0.5;
+
 function getCachedData(key) {
   const cached = sessionStorage.getItem(key);
   if (cached) return JSON.parse(cached);
@@ -9,6 +10,7 @@ function getCachedData(key) {
 function setCachedData(key, data) {
   sessionStorage.setItem(key, JSON.stringify(data));
 }
+
 function initLiveScrobbleCounter() {
   const scrobbleEl = document.getElementById('stat-total-scrobbles');
   if (!scrobbleEl) return;
@@ -18,10 +20,12 @@ function initLiveScrobbleCounter() {
     scrobbleEl.innerHTML = `🌍 <strong>${scrobbles.toLocaleString()}</strong> Global Scrobbles`;
   }, 1000);
 }
+
 function openShareLink(query) {
-  const url = `https:
+  const url = `https://share.echomusic.fun/search?q=${encodeURIComponent(query)}`;
   window.open(url, '_blank', 'noopener,noreferrer');
 }
+
 function renderSkeletons(containerId, count, colClasses) {
   const container = document.getElementById(containerId);
   if(!container) return;
@@ -40,6 +44,7 @@ function renderSkeletons(containerId, count, colClasses) {
     container.appendChild(card);
   }
 }
+
 async function fetchItunesData(trackName, artistName) {
   let cleanTrackName = trackName ? trackName.replace(/\(.*?\)|\[.*?\]/g, '').split('-')[0].trim() : '';
   const query = encodeURIComponent((artistName || '') + ' ' + cleanTrackName).trim();
@@ -47,11 +52,11 @@ async function fetchItunesData(trackName, artistName) {
   const cached = getCachedData(cacheKey);
   if (cached) return cached;
   let result = { 
-    art: 'data:image/svg+xml;utf8,<svg xmlns="http:
+    art: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="%23f5f0e0"/></svg>',
     previewUrl: null
   };
   try {
-    const res = await fetch(`https:
+    const res = await fetch(`https://itunes.apple.com/search?term=${query}&media=music&limit=1`);
     if (res.ok) {
       const data = await res.json();
       if (data.results && data.results.length > 0) {
@@ -65,12 +70,13 @@ async function fetchItunesData(trackName, artistName) {
   setCachedData(cacheKey, result);
   return result;
 }
+
 async function loadTracks(country = 'global') {
   renderSkeletons('charts-grid', 6);
   try {
-    let url = `https:
+    let url = `https://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=${LASTFM_API_KEY}&format=json&limit=25`;
     if (country !== 'global') {
-      url = `https:
+      url = `https://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=${encodeURIComponent(country)}&api_key=${LASTFM_API_KEY}&format=json&limit=25`;
     }
     const res = await fetch(url);
     const data = await res.json();
@@ -124,23 +130,25 @@ async function loadTracks(country = 'global') {
     }
     if (country === 'global') {
         const marqueeWrapper = document.getElementById('marquee-wrapper');
-        marqueeWrapper.innerHTML = ''; 
-        const marqueeTracks = tracks.slice(7, 22);
-        let marqueeHTML = '';
-        for (const track of marqueeTracks) {
-            const it = await fetchItunesData(track.name, track.artist.name);
-            marqueeHTML += `
-            <div class="phone-mockup-wrapper" onclick="openShareLink('${track.artist.name} ${track.name.replace(/'/g, "\\'")}')">
-              <img src="${it.art}" class="phone-mockup" alt="${track.name}">
-              <p class="caption" style="color: var(--muted); text-align: center; max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${track.name}</p>
-            </div>
-            `;
-        }
-        for (let j = 0; j < 2; j++) {
-            const group = document.createElement('div');
-            group.className = 'marquee-group';
-            group.innerHTML = marqueeHTML;
-            marqueeWrapper.appendChild(group);
+        if (marqueeWrapper) {
+            marqueeWrapper.innerHTML = ''; 
+            const marqueeTracks = tracks.slice(7, 22);
+            let marqueeHTML = '';
+            for (const track of marqueeTracks) {
+                const it = await fetchItunesData(track.name, track.artist.name);
+                marqueeHTML += `
+                <div class="phone-mockup-wrapper" onclick="openShareLink('${track.artist.name} ${track.name.replace(/'/g, "\\'")}')">
+                  <img src="${it.art}" class="phone-mockup" alt="${track.name}">
+                  <p class="caption" style="color: var(--muted); text-align: center; max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${track.name}</p>
+                </div>
+                `;
+            }
+            for (let j = 0; j < 2; j++) {
+                const group = document.createElement('div');
+                group.className = 'marquee-group';
+                group.innerHTML = marqueeHTML;
+                marqueeWrapper.appendChild(group);
+            }
         }
     }
     observeFeatures();
@@ -148,11 +156,12 @@ async function loadTracks(country = 'global') {
     console.error("Error fetching tracks:", error);
   }
 }
+
 async function loadArtistsAndAlbums() {
     renderSkeletons('artists-grid', 6);
     renderSkeletons('albums-grid', 6);
     try {
-        const artistsRes = await fetch(`https:
+        const artistsRes = await fetch(`https://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=${LASTFM_API_KEY}&format=json&limit=6`);
         const artistsData = await artistsRes.json();
         const artists = artistsData.artists.artist;
         const colorClasses = ['feature-card-1', 'feature-card-2', 'feature-card-3', 'feature-card-4', 'feature-card-5', 'feature-card-6'];
@@ -180,7 +189,7 @@ async function loadArtistsAndAlbums() {
         const top2Artists = [artists[0], artists[1]];
         let albumIndex = 0;
         for (const topArtist of top2Artists) {
-            const albumsRes = await fetch(`https:
+            const albumsRes = await fetch(`https://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist=${encodeURIComponent(topArtist.name)}&api_key=${LASTFM_API_KEY}&format=json&limit=3`);
             const albumsData = await albumsRes.json();
             const albums = albumsData.topalbums.album;
             for(const album of albums) {
@@ -207,10 +216,11 @@ async function loadArtistsAndAlbums() {
         console.error("Error fetching artists/albums", e);
     }
 }
+
 async function loadTimeMachine() {
     renderSkeletons('time-grid', 6);
     try {
-        const res = await fetch(`https:
+        const res = await fetch(`https://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=2010s&api_key=${LASTFM_API_KEY}&format=json&limit=6`);
         const data = await res.json();
         const tracks = data.tracks.track;
         const timeGrid = document.getElementById('time-grid');
@@ -250,13 +260,15 @@ async function loadTimeMachine() {
         console.error("Error loading time machine", e);
     }
 }
+
 async function loadGenre(genreTag = 'bollywood') {
     renderSkeletons('genre-grid', 6);
     try {
-        const res = await fetch(`https:
+        const res = await fetch(`https://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=${encodeURIComponent(genreTag)}&api_key=${LASTFM_API_KEY}&format=json&limit=6`);
         const data = await res.json();
         const tracks = data.tracks.track;
         const grid = document.getElementById('genre-grid');
+        if (!grid) return;
         grid.innerHTML = '';
         const colorClasses = ['feature-card-2', 'feature-card-4', 'feature-card-6', 'feature-card-1', 'feature-card-3', 'feature-card-5'];
         for (let i = 0; i < 6; i++) {
@@ -293,15 +305,20 @@ async function loadGenre(genreTag = 'bollywood') {
         console.error("Error loading genre", e);
     }
 }
-document.getElementById('region-filter').addEventListener('change', (e) => {
-    loadTracks(e.target.value);
-});
+
+const regionFilter = document.getElementById('region-filter');
+if (regionFilter) {
+  regionFilter.addEventListener('change', (e) => {
+      loadTracks(e.target.value);
+  });
+}
 const genreFilter = document.getElementById('genre-filter');
 if (genreFilter) {
     genreFilter.addEventListener('change', (e) => {
         loadGenre(e.target.value);
     });
 }
+
 function setupRipples() {
     function createRipple(event) {
       const button = event.currentTarget;
@@ -330,13 +347,16 @@ function setupRipples() {
       btn.addEventListener('touchstart', createRipple, {passive: true});
     });
 }
+
 window.addEventListener('scroll', () => {
   const currentScrollY = window.scrollY;
   const navbar = document.getElementById('navbar');
-  if (currentScrollY > 150) {
-    navbar.classList.add('visible');
-  } else {
-    navbar.classList.remove('visible');
+  if (navbar) {
+    if (currentScrollY > 150) {
+      navbar.classList.add('visible');
+    } else {
+      navbar.classList.remove('visible');
+    }
   }
   const fabBubble = document.querySelector('.support-msg-bubble');
   const supportFab = document.getElementById('support-fab');
@@ -355,13 +375,14 @@ window.addEventListener('scroll', () => {
     if (fabBubble) fabBubble.classList.remove('show');
   }
 }, {passive: true});
+
 const typeText = document.getElementById('typewriter-text');
 const msg = "Hi! If you love Echo Music, consider supporting my work! ☕";
 let typeIndex = 0;
 let hasTyped = false;
 function typeWriter() {
   if (typeIndex < msg.length) {
-    typeText.innerHTML += msg.charAt(typeIndex);
+    if(typeText) typeText.innerHTML += msg.charAt(typeIndex);
     typeIndex++;
     setTimeout(typeWriter, 40); 
   } else {
@@ -377,6 +398,7 @@ function startTypeWriter() {
     setTimeout(typeWriter, 300);
   }
 }
+
 function setupReveals() {
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -387,6 +409,7 @@ function setupReveals() {
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
 }
+
 function observeFeatures() {
   const featureObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
@@ -401,10 +424,14 @@ function observeFeatures() {
     featureObserver.observe(card);
   });
 }
+
 initLiveScrobbleCounter();
 setupRipples();
 setupReveals();
-loadTracks('global');
-loadArtistsAndAlbums();
-loadGenre('bollywood');
-loadTimeMachine();
+
+if(document.getElementById('charts-grid')) {
+  loadTracks('global');
+  loadArtistsAndAlbums();
+  loadGenre('bollywood');
+  loadTimeMachine();
+}
