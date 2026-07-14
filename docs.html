@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Echo Charts API Documentation. Learn how to fetch global trending music data, top artists, and historical charts.">
+  <meta name="keywords" content="music API, echo charts API, developer docs, last.fm api wrapper, trending music endpoints">
+  <meta name="author" content="Echo Music">
+  <link rel="canonical" href="https://stats.echomusic.fun/docs.html">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://stats.echomusic.fun/docs.html">
+  <meta property="og:title" content="API Docs - Echo Charts">
+  <meta property="og:description" content="Echo Charts API Documentation. Learn how to fetch global trending music data, top artists, and historical charts.">
+  <meta property="og:image" content="https://stats.echomusic.fun/assets/graph.png">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://stats.echomusic.fun/docs.html">
+  <meta property="twitter:title" content="API Docs - Echo Charts">
+  <meta property="twitter:description" content="Echo Charts API Documentation. Learn how to fetch global trending music data, top artists, and historical charts.">
+  <meta property="twitter:image" content="https://stats.echomusic.fun/assets/graph.png">
+  <title>API Docs - Echo Charts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Unbounded:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="./assets/icon.png">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .docs-container {
+      padding-top: 140px;
+      padding-bottom: 80px;
+      max-width: 900px;
+    }
+    .docs-section {
+      margin-bottom: var(--space-xxl);
+    }
+    .code-block {
+      background: var(--surface-dark);
+      color: #e5e5e5;
+      padding: var(--space-lg);
+      border-radius: var(--radius-md);
+      font-family: monospace;
+      font-size: 14px;
+      overflow-x: auto;
+      margin: var(--space-md) 0;
+      line-height: 1.6;
+    }
+    .endpoint-badge {
+      display: inline-block;
+      background: var(--surface-soft);
+      border: 1px solid var(--hairline);
+      padding: 6px 16px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-family: monospace;
+      font-size: 15px;
+      color: var(--ink);
+      margin-bottom: var(--space-sm);
+    }
+    .method-get {
+      color: var(--accent-violet);
+      font-weight: bold;
+      margin-right: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: var(--space-md);
+      margin-bottom: var(--space-lg);
+      background: var(--canvas);
+    }
+    th, td {
+      padding: 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--hairline);
+    }
+    th {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 14px;
+      color: var(--ink);
+    }
+    td {
+      font-size: 15px;
+      color: var(--muted);
+    }
+    td strong {
+      color: var(--ink);
+      font-family: monospace;
+    }
+    .pill {
+      display: inline-block;
+      background: var(--surface-card);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: var(--ink);
+      border: 1px solid var(--hairline);
+    }
+  </style>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-12BVLXMW2K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-12BVLXMW2K');
+</script>
+</head>
+<body>
+  <nav id="navbar" class="visible" style="transform: translateY(0); border-bottom: 1px solid var(--hairline);">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo display-font">
+        <img src="./assets/icon.png" alt="Echo Charts" style="width: 32px; height: 32px; border-radius: 8px;">
+        Echo Charts
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="btn btn-secondary ripple" style="height: 40px; padding: 0 20px;">Back to Home</a>
+      </div>
+    </div>
+  </nav>
+  <main class="container docs-container reveal active">
+    <div style="margin-bottom: 64px;">
+      <h1 class="display-lg" style="margin-bottom: var(--space-sm);">API Reference</h1>
+      <p class="body-md" style="color: var(--muted); font-size: 18px;">Build your own music dashboards and applications powered by pure, unadulterated listening data. No algorithms, no AI push—just raw global scrobbles.</p>
+    </div>
+    <section class="docs-section">
+      <h2 class="title-lg" style="margin-bottom: var(--space-sm);">Overview</h2>
+      <p class="body-md">The Echo Charts API is a RESTful JSON interface providing aggregated charting data. All endpoints are publicly accessible and return data in a consistent JSON format.</p>
+      <div style="background: var(--surface-soft); padding: var(--space-lg); border-radius: var(--radius-md); margin-top: var(--space-md);">
+        <p class="caption-uppercase" style="color: var(--muted); margin-bottom: 8px;">Base URL</p>
+        <code style="font-size: 18px; font-weight: 600; color: var(--ink);">https://stats.echomusic.fun/api/v1</code>
+      </div>
+    </section>
+    <section class="docs-section">
+      <h2 class="title-lg" style="margin-bottom: var(--space-sm);">Authentication & Rate Limiting</h2>
+      <p class="body-md">Currently, no API key is required to access the <code>v1/trending</code> endpoints. However, to ensure fair usage, we enforce strict rate limits based on your IP address.</p>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Limit Type</th>
+              <th>Quota</th>
+              <th>Window</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Global Rate Limit</strong></td>
+              <td>60 requests</td>
+              <td>1 minute</td>
+            </tr>
+            <tr>
+              <td><strong>Burst Limit</strong></td>
+              <td>10 requests</td>
+              <td>1 second</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="body-md" style="font-size: 14px;"><span class="pill">Note</span> If you exceed these limits, the API will return a <code>429 Too Many Requests</code> status.</p>
+    </section>
+    <hr style="border: 0; border-top: 1px solid var(--hairline); margin: 64px 0;">
+    <section class="docs-section">
+      <h2 class="display-sm" style="margin-bottom: var(--space-xl);">Endpoints</h2>
+      <div style="margin-bottom: var(--space-xxl);">
+        <div class="endpoint-badge"><span class="method-get">GET</span>/trending</div>
+        <p class="body-md" style="margin-bottom: var(--space-md);">Fetches the current trending music data. This endpoint is highly customizable, allowing you to fetch tracks, artists, albums, or all combined, filtered by region.</p>
+        <h3 class="title-md">Query Parameters</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>type</strong></td>
+                <td><span class="pill">string</span></td>
+                <td><span style="color: var(--accent-pink); font-weight: bold;">Yes</span></td>
+                <td>Specifies the entity to fetch. Allowed values: <code>tracks</code>, <code>artists</code>, <code>albums</code>, <code>all</code>.</td>
+              </tr>
+              <tr>
+                <td><strong>limit</strong></td>
+                <td><span class="pill">integer</span></td>
+                <td>No</td>
+                <td>Number of results to return. Default is <code>10</code>. Max is <code>50</code>.</td>
+              </tr>
+              <tr>
+                <td><strong>country</strong></td>
+                <td><span class="pill">string</span></td>
+                <td>No</td>
+                <td>Filter results by region (e.g., <code>united states</code>, <code>japan</code>). If omitted, returns global charts.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3 class="title-md" style="margin-top: var(--space-xl);">Example Request</h3>
+        <div class="code-block">
+curl -X GET "https://stats.echomusic.fun/api/v1/trending?type=tracks&limit=5&country=japan" \
+  -H "Accept: application/json"
+        </div>
+        <h3 class="title-md" style="margin-top: var(--space-xl);">Example Response</h3>
+        <div class="code-block" style="color: #a4d4c5;">
+{
+  "success": true,
+  "timestamp": "2026-07-14T11:32:00Z",
+  "data": {
+    "tracks": [
+      {
+        "rank": 1,
+        "title": "Blinding Lights",
+        "artist": "The Weeknd",
+        "listeners": 1540324,
+        "playcount": 34910243,
+        "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music115/.../300x300bb.jpg",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/..."
+      },
+      {
+        "rank": 2,
+        "title": "Shape of You",
+        "artist": "Ed Sheeran",
+        "listeners": 1420102,
+        "playcount": 31201944,
+        "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music125/.../300x300bb.jpg",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/..."
+      }
+    ]
+  }
+}
+        </div>
+      </div>
+      <div style="margin-bottom: var(--space-xxl);">
+        <div class="endpoint-badge"><span class="method-get">GET</span>/historical</div>
+        <p class="body-md" style="margin-bottom: var(--space-md);">Fetches the top charts for a historical time period (e.g., specific decades or years).</p>
+        <h3 class="title-md">Query Parameters</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>period</strong></td>
+                <td><span class="pill">string</span></td>
+                <td><span style="color: var(--accent-pink); font-weight: bold;">Yes</span></td>
+                <td>The historical timeframe. Examples: <code>2010s</code>, <code>2000s</code>, <code>1990s</code>.</td>
+              </tr>
+              <tr>
+                <td><strong>limit</strong></td>
+                <td><span class="pill">integer</span></td>
+                <td>No</td>
+                <td>Number of results to return. Default is <code>10</code>. Max is <code>50</code>.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    <hr style="border: 0; border-top: 1px solid var(--hairline); margin: 64px 0;">
+    <section class="docs-section">
+      <h2 class="title-lg" style="margin-bottom: var(--space-sm);">Errors</h2>
+      <p class="body-md">The API uses standard HTTP status codes to indicate the success or failure of an API request.</p>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Status Code</th>
+              <th>Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>200</strong></td>
+              <td><span style="color: #10b981;">OK</span> - The request was successful.</td>
+            </tr>
+            <tr>
+              <td><strong>400</strong></td>
+              <td><span style="color: #ef4444;">Bad Request</span> - Missing or invalid parameters.</td>
+            </tr>
+            <tr>
+              <td><strong>429</strong></td>
+              <td><span style="color: #f59e0b;">Too Many Requests</span> - You have hit the rate limit.</td>
+            </tr>
+            <tr>
+              <td><strong>500</strong></td>
+              <td><span style="color: #ef4444;">Internal Server Error</span> - Upstream API failure (Last.fm/iTunes).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col-left">
+          <div class="footer-logo display-font">
+             <img src="./assets/icon.png" alt="">
+             Echo Charts
+          </div>
+          <div class="footer-tagline body-sm">Global charts powered by data. Part of the Echo Music ecosystem.</div>
+          <div class="footer-disclaimer caption" style="margin-top: 16px; color: var(--muted); max-width: 280px; line-height: 1.4;">
+            Echo Charts does not host or hold any audio content. Data is retrieved live via Last.fm and iTunes APIs.
+          </div>
+        </div>
+        <div class="footer-col-right">
+          <div class="footer-nav nav-link" style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: flex-end;">
+            <a href="https://echomusic.fun" class="footer-link">Main Site</a>
+            <a href="docs.html" class="footer-link">API Docs</a>
+            <a href="privacy.html" class="footer-link">Privacy Policy</a>
+            <a href="terms.html" class="footer-link">Terms & Conditions</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // Scroll Navbar
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.style.background = 'rgba(255, 250, 240, 0.9)';
+      } else {
+        navbar.style.background = 'var(--canvas)';
+      }
+    }, {passive: true});
+  </script>
+</body>
+</html>

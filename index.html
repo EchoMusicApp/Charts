@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Echo Charts - Live global music charts powered by raw listening data. Track the top trending tracks, artists, and albums globally without algorithmic bias.">
+  <meta name="keywords" content="music charts, global music, last.fm charts, top songs, trending music, top artists, echo music, statistics">
+  <meta name="author" content="Echo Music">
+  <link rel="canonical" href="https://stats.echomusic.fun/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://stats.echomusic.fun/">
+  <meta property="og:title" content="Echo Charts - Global Music Data">
+  <meta property="og:description" content="Discover the tracks, artists, and albums gaining the most momentum right now. Powered by raw user data, not algorithms.">
+  <meta property="og:image" content="https://stats.echomusic.fun/assets/graph.png">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://stats.echomusic.fun/">
+  <meta property="twitter:title" content="Echo Charts - Global Music Data">
+  <meta property="twitter:description" content="Discover the tracks, artists, and albums gaining the most momentum right now. Powered by raw user data, not algorithms.">
+  <meta property="twitter:image" content="https://stats.echomusic.fun/assets/graph.png">
+  <title>Echo Charts - Global Music Data</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Unbounded:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="./assets/icon.png">
+  <link rel="stylesheet" href="style.css">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-12BVLXMW2K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-12BVLXMW2K');
+</script>
+</head>
+<body>
+  <nav id="navbar">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo display-font">
+        <img src="./assets/icon.png" alt="Echo Charts" style="width: 32px; height: 32px; border-radius: 8px;">
+        Echo Charts
+      </a>
+      <div class="nav-links" style="display: flex; gap: 16px; align-items: center;">
+        <a href="#charts" class="btn btn-secondary ripple" style="height: 40px; padding: 0 16px;">Tracks</a>
+        <a href="#artists" class="btn btn-secondary ripple" style="height: 40px; padding: 0 16px;">Artists</a>
+        <a href="#albums" class="btn btn-secondary ripple" style="height: 40px; padding: 0 16px;">Albums</a>
+        <a href="docs.html" class="btn btn-primary ripple" style="height: 40px; padding: 0 20px;">API Docs</a>
+      </div>
+    </div>
+  </nav>
+  <header class="hero container">
+    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Trending Track" id="hero-img" class="hero-logo reveal" style="object-fit: cover; background-color: var(--surface-card);">
+    <h1 class="display-xl reveal" id="hero-title" style="margin-bottom: 8px;">Loading...<br><span class="display-lg" id="hero-artist" style="color: var(--muted); font-size: 56px;">Please wait</span></h1>
+    <p class="hero-sub body-md reveal" id="hero-stats" style="margin-top: 24px;">
+      Fetching global charts...
+    </p>
+    <div class="hero-ctas reveal">
+      <a href="#charts" class="btn btn-primary ripple">Explore Top 10</a>
+      <a href="https://www.last.fm/charts" target="_blank" class="btn btn-secondary ripple" style="display: flex; align-items: center; gap: 8px;">
+        Powered by <img src="./assets/lastfm.png" alt="Last.fm" style="height: 26px; object-fit: contain;">
+      </a>
+    </div>
+  </header>
+  <section class="ticker">
+    <div class="container ticker-inner">
+      <div class="ticker-item title-md reveal" style="text-transform: uppercase; font-size: 15px; letter-spacing: 0.5px; text-align: center;">Not pushed by algorithm or AI — It's just raw data the users are listening to</div>
+    </div>
+  </section>
+  <section class="screenshots">
+    <div class="container screenshots-header reveal">
+      <p class="screenshots-label caption-uppercase">TOP TRACKS WORLDWIDE</p>
+      <h2 class="screenshots-title display-md">What the world is listening to</h2>
+    </div>
+    <div class="scroll-strip-wrapper" id="marquee-wrapper">
+    </div>
+  </section>
+  <section class="features container" id="charts">
+    <div class="features-header">
+      <div class="region-selector-wrapper">
+        <select id="region-filter" class="region-selector">
+          <option value="global">Global</option>
+          <option value="United States">United States</option>
+          <option value="United Kingdom">United Kingdom</option>
+          <option value="Japan">Japan</option>
+          <option value="Brazil">Brazil</option>
+          <option value="India">India</option>
+          <option value="Canada">Canada</option>
+          <option value="Germany">Germany</option>
+        </select>
+      </div>
+      <p class="caption-uppercase" style="color: var(--muted); margin-bottom: var(--space-sm);">GLOBAL CHARTS</p>
+      <h2 class="display-md" style="color: var(--ink); margin-bottom: var(--space-sm);">Top Trending Tracks</h2>
+      <p class="body-md" style="color: var(--muted); max-width: 540px; margin: 0 auto;">Discover the tracks gaining the most momentum right now.</p>
+    </div>
+    <div class="features-grid" id="charts-grid">
+    </div>
+  </section>
+  <section class="features container" id="artists" style="margin-top: 40px; background-color: var(--surface-soft);">
+    <div class="features-header">
+      <p class="caption-uppercase" style="color: var(--muted); margin-bottom: var(--space-sm);">GLOBAL ICONS</p>
+      <h2 class="display-md" style="color: var(--ink); margin-bottom: var(--space-sm);">Top Trending Artists</h2>
+      <p class="body-md" style="color: var(--muted); max-width: 540px; margin: 0 auto;">The artists currently dominating the global airwaves.</p>
+    </div>
+    <div class="features-grid" id="artists-grid">
+    </div>
+  </section>
+  <section class="features container" id="albums" style="margin-top: 40px;">
+    <div class="features-header">
+      <p class="caption-uppercase" style="color: var(--muted); margin-bottom: var(--space-sm);">ALBUM CHARTS</p>
+      <h2 class="display-md" style="color: var(--ink); margin-bottom: var(--space-sm);">Top Trending Albums</h2>
+      <p class="body-md" style="color: var(--muted); max-width: 540px; margin: 0 auto;">The most streamed albums by the world's top artists.</p>
+    </div>
+    <div class="features-grid" id="albums-grid">
+    </div>
+  </section>
+  <section class="features container" id="timemachine" style="margin-top: 40px; background-color: var(--surface-soft); margin-bottom: 80px;">
+    <div class="features-header">
+      <p class="caption-uppercase" style="color: var(--muted); margin-bottom: var(--space-sm);">TIME MACHINE</p>
+      <h2 class="display-md" style="color: var(--ink); margin-bottom: var(--space-sm);">Rewind: The 2010s</h2>
+      <p class="body-md" style="color: var(--muted); max-width: 540px; margin: 0 auto;">Take a trip down memory lane. Here's what was topping the charts in the 2010s.</p>
+    </div>
+    <div class="features-grid" id="time-grid">
+    </div>
+  </section>
+  <section class="features container" id="genre" style="margin-bottom: 80px;">
+    <div class="features-header">
+      <div class="region-selector-wrapper">
+        <select id="genre-filter" class="region-selector">
+          <option value="bollywood">Bollywood</option>
+          <option value="kpop">K-Pop</option>
+          <option value="hiphop">Hip Hop</option>
+          <option value="electronic">Electronic</option>
+          <option value="indie">Indie</option>
+          <option value="lo-fi">Lo-Fi</option>
+        </select>
+      </div>
+      <p class="caption-uppercase" style="color: var(--muted); margin-bottom: var(--space-sm);">GENRE SPOTLIGHT</p>
+      <h2 class="display-md" style="color: var(--ink); margin-bottom: var(--space-sm);">Trending by Genre</h2>
+      <p class="body-md" style="color: var(--muted); max-width: 540px; margin: 0 auto;">Explore the most streamed tracks across different musical styles.</p>
+    </div>
+    <div class="features-grid" id="genre-grid">
+    </div>
+  </section>
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col-left">
+          <div class="footer-logo display-font">
+             <img src="./assets/icon.png" alt="">
+             Echo Charts
+          </div>
+          <div class="footer-tagline body-sm">Global charts powered by data. Part of the Echo Music ecosystem.</div>
+          <div class="footer-disclaimer caption" style="margin-top: 16px; color: var(--muted); max-width: 280px; line-height: 1.4;">
+            Echo Charts does not host or hold any audio content. Data is retrieved live via Last.fm and iTunes APIs.
+          </div>
+        </div>
+        <div class="footer-col-right">
+          <div class="footer-nav nav-link" style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: flex-end;">
+            <a href="https://echomusic.fun" class="footer-link">Main Site</a>
+            <a href="docs.html" class="footer-link">API Docs</a>
+            <a href="privacy.html" class="footer-link">Privacy Policy</a>
+            <a href="terms.html" class="footer-link">Terms & Conditions</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <div class="support-fab" id="support-fab">
+    <a href="https://support.iad1tya.cyou" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: flex; flex-direction: column; align-items: flex-end; gap: 16px; pointer-events: none;">
+      <div class="support-msg-bubble">
+        <span id="typewriter-text"></span><span class="cursor">|</span>
+      </div>
+      <div class="support-btn" style="pointer-events: auto;">
+        <img src="https://github.com/iad1tya.png" alt="Developer" class="support-avatar">
+      </div>
+    </a>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

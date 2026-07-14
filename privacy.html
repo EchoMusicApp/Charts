@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Privacy Policy for Echo Charts. Learn how we handle your data, third-party APIs, and caching.">
+  <meta name="author" content="Echo Music">
+  <link rel="canonical" href="https://stats.echomusic.fun/privacy.html">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://stats.echomusic.fun/privacy.html">
+  <meta property="og:title" content="Privacy Policy - Echo Charts">
+  <meta property="og:description" content="Privacy Policy for Echo Charts. Learn how we handle your data, third-party APIs, and caching.">
+  <meta property="og:image" content="https://stats.echomusic.fun/assets/graph.png">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://stats.echomusic.fun/privacy.html">
+  <meta property="twitter:title" content="Privacy Policy - Echo Charts">
+  <meta property="twitter:description" content="Privacy Policy for Echo Charts. Learn how we handle your data, third-party APIs, and caching.">
+  <meta property="twitter:image" content="https://stats.echomusic.fun/assets/graph.png">
+  <title>Privacy Policy - Echo Charts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Unbounded:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="./assets/icon.png">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .docs-container {
+      padding-top: 140px;
+      padding-bottom: 80px;
+      max-width: 800px;
+    }
+    p { margin-bottom: 16px; color: var(--muted); line-height: 1.6; }
+    h2 { margin-top: 32px; margin-bottom: 16px; color: var(--ink); }
+  </style>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-12BVLXMW2K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-12BVLXMW2K');
+</script>
+</head>
+<body>
+  <nav id="navbar" class="visible" style="transform: translateY(0); border-bottom: 1px solid var(--hairline);">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo display-font">
+        <img src="./assets/icon.png" alt="Echo Charts" style="width: 32px; height: 32px; border-radius: 8px;">
+        Echo Charts
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="btn btn-secondary ripple" style="height: 40px; padding: 0 20px;">Back to Home</a>
+      </div>
+    </div>
+  </nav>
+  <main class="container docs-container reveal active">
+    <h1 class="display-lg" style="margin-bottom: var(--space-lg);">Privacy Policy</h1>
+    <h2>Introduction</h2>
+    <p>At Echo Charts, part of the Echo Music ecosystem, your privacy is critically important to us. This Privacy Policy explains how we collect, use, and protect your information when you use our website and services.</p>
+    <h2>Data Collection</h2>
+    <p>Echo Charts does not require you to create an account or provide personal information to use the global charting service. We fetch trending music data from third-party APIs (such as Last.fm and iTunes) directly on your device or via our caching layer.</p>
+    <h2>Caching and Storage</h2>
+    <p>To improve performance and prevent API rate-limits, Echo Charts utilizes browser-based Session Storage. This temporarily stores album art and track metadata locally on your device while you browse. This data is cleared when your browsing session ends.</p>
+    <h2>Third-Party Services</h2>
+    <p>Our service integrates with Last.fm and Apple iTunes Search APIs to deliver charting data and media. These services may collect standard web analytics (such as IP addresses) when your browser requests data from them. Please refer to their respective privacy policies for more information.</p>
+    <h2>Changes to this Policy</h2>
+    <p>We may update this Privacy Policy from time to time. Any changes will be reflected on this page.</p>
+  </main>
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col-left">
+          <div class="footer-logo display-font">
+             <img src="./assets/icon.png" alt="">
+             Echo Charts
+          </div>
+          <div class="footer-tagline body-sm">Global charts powered by data. Part of the Echo Music ecosystem.</div>
+          <div class="footer-disclaimer caption" style="margin-top: 16px; color: var(--muted); max-width: 280px; line-height: 1.4;">
+            Echo Charts does not host or hold any audio content. Data is retrieved live via Last.fm and iTunes APIs.
+          </div>
+        </div>
+        <div class="footer-col-right">
+          <div class="footer-nav nav-link" style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: flex-end;">
+            <a href="https://echomusic.fun" class="footer-link">Main Site</a>
+            <a href="docs.html" class="footer-link">API Docs</a>
+            <a href="privacy.html" class="footer-link">Privacy Policy</a>
+            <a href="terms.html" class="footer-link">Terms & Conditions</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
