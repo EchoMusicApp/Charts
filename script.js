@@ -52,7 +52,7 @@ async function fetchItunesData(trackName, artistName) {
   const cached = getCachedData(cacheKey);
   if (cached) return cached;
   let result = { 
-    art: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="%23f5f0e0"/></svg>',
+    art: './assets/fallback.png',
     previewUrl: null
   };
   try {
@@ -106,7 +106,19 @@ async function loadTracks(country = 'global') {
       let extraClass = i === 1 ? 'col-span-2 flex-row' : (i === 6 ? 'col-span-3 flex-row' : '');
       card.className = `feature-card ${colorClasses[i-1]} ${extraClass}`;
       card.style.cursor = 'pointer';
-      card.onclick = () => openShareLink(`${track.artist.name} ${track.name}`);
+      card.onclick = (e) => {
+              if (window.innerWidth <= 768 && itunes && itunes.previewUrl) {
+                  e.preventDefault();
+                  if (audioPlayer.src === itunes.previewUrl && !audioPlayer.paused) {
+                      audioPlayer.pause();
+                  } else {
+                      audioPlayer.src = itunes.previewUrl;
+                      audioPlayer.play().catch(err=>console.log(err));
+                  }
+                  return;
+              }
+              openShareLink(`${track.artist.name} ${track.name}`);
+            };
       if (itunes.previewUrl) {
           card.addEventListener('mouseenter', () => {
              audioPlayer.src = itunes.previewUrl;
@@ -233,7 +245,19 @@ async function loadTimeMachine() {
             let extraClass = i === 0 ? 'col-span-2 flex-row' : (i === 5 ? 'col-span-3 flex-row' : '');
             card.className = `feature-card ${colorClasses[i]} ${extraClass}`;
             card.style.cursor = 'pointer';
-            card.onclick = () => openShareLink(`${track.artist.name} ${track.name}`);
+            card.onclick = (e) => {
+                    if (window.innerWidth <= 768 && itunes && itunes.previewUrl) {
+                        e.preventDefault();
+                        if (audioPlayer.src === itunes.previewUrl && !audioPlayer.paused) {
+                            audioPlayer.pause();
+                        } else {
+                            audioPlayer.src = itunes.previewUrl;
+                            audioPlayer.play().catch(err=>console.log(err));
+                        }
+                        return;
+                    }
+                    openShareLink(`${track.artist.name} ${track.name}`);
+                  };
             if (itunes.previewUrl) {
                 card.addEventListener('mouseenter', () => {
                    audioPlayer.src = itunes.previewUrl;
@@ -278,7 +302,19 @@ async function loadGenre(genreTag = 'bollywood') {
             let extraClass = i === 0 ? 'col-span-2 flex-row' : (i === 5 ? 'col-span-3 flex-row' : '');
             card.className = `feature-card ${colorClasses[i]} ${extraClass}`;
             card.style.cursor = 'pointer';
-            card.onclick = () => openShareLink(`${track.artist.name} ${track.name}`);
+            card.onclick = (e) => {
+                    if (window.innerWidth <= 768 && itunes && itunes.previewUrl) {
+                        e.preventDefault();
+                        if (audioPlayer.src === itunes.previewUrl && !audioPlayer.paused) {
+                            audioPlayer.pause();
+                        } else {
+                            audioPlayer.src = itunes.previewUrl;
+                            audioPlayer.play().catch(err=>console.log(err));
+                        }
+                        return;
+                    }
+                    openShareLink(`${track.artist.name} ${track.name}`);
+                  };
             if (itunes.previewUrl) {
                 card.addEventListener('mouseenter', () => {
                    audioPlayer.src = itunes.previewUrl;
